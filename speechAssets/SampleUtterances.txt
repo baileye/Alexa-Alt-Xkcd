@@ -1,0 +1,4 @@
+GetAltText what is the x. k. c. d. alt text
+GetAltText what is the text
+GetAltText today's comic
+GetAltText comic 
