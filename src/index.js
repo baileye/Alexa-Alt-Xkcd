@@ -10,6 +10,12 @@ var http = require('http');
  */
 var AlexaSkill = require('./AlexaSkill');
 
+/**
+ * TidePooler is a child of AlexaSkill.
+ * To read more about inheritance in JavaScript, see the link below.
+ *
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Introduction_to_Object-Oriented_JavaScript#Inheritance
+ */
 var AltXkcd = function () {
     AlexaSkill.call(this, APP_ID);
 };
@@ -28,7 +34,9 @@ AltXkcd.prototype.eventHandlers.onSessionStarted = function (sessionStartedReque
 
 AltXkcd.prototype.eventHandlers.onLaunch = function (launchRequest, session, response) {
     console.log("onLaunch requestId: " + launchRequest.requestId + ", sessionId: " + session.sessionId);
-    handleWelcomeRequest(response);
+    //handleWelcomeRequest(response);
+    // Design decision -- as the skill has a single request currently, go straight to loading alt text
+    handleOneshotAltRequest(intent, session, response);
 };
 
 AltXkcd.prototype.eventHandlers.onSessionEnded = function (sessionEndedRequest, session) {
@@ -62,23 +70,24 @@ AltXkcd.prototype.intentHandlers = {
 
 // -------------------------- AltXkcd Domain Specific Business Logic --------------------------
 
-function handleWelcomeRequest(response) {
-        speechOutput = {
-            speech: "<speak>Welcome to Alt X. K. C. D. "
-                + "You can get the alt text for the current comic."
-                + "</speak>",
-            type: AlexaSkill.speechOutputType.PLAIN_TEXT
-        },
-        repromptOutput = {
-            speech: "I can load the alt text for the current X. K. C. D. "
-                + "comic.",
-            type: AlexaSkill.speechOutputType.PLAIN_TEXT
-        };
+// function handleWelcomeRequest(response) {
+//         speechOutput = {
+//             speech: "<speak>Welcome to Alt X. K. C. D. "
+//                 + "You can get the alt text for the current comic."
+//                 + "</speak>",
+//             type: AlexaSkill.speechOutputType.PLAIN_TEXT
+//         },
+//         repromptOutput = {
+//             speech: "I can load the alt text for the current X. K. C. D. "
+//                 + "comic.",
+//             type: AlexaSkill.speechOutputType.PLAIN_TEXT
+//         };
 
-    response.ask(speechOutput, repromptOutput);
-}
+//     response.ask(speechOutput, repromptOutput);
+// }
 
 function handleHelpRequest(response) {
+    repromptText = "Ask me to get today's comic.";
     var speechOutput = "I can load the alt text for the current X. K. C. D. "
                 + "comic.";
         + repromptText;
@@ -87,6 +96,11 @@ function handleHelpRequest(response) {
 }
 
 
+/**
+ * This handles the one-shot interaction, where the user utters a phrase like:
+ * 'Alexa, open Tide Pooler and get tide information for Seattle on Saturday'.
+ * If there is an error in a slot, this will guide the user to the dialog approach.
+ */
 function handleOneshotAltRequest(intent, session, response) {
 
     // Issue the request, and respond to the user
@@ -140,3 +154,4 @@ exports.handler = function (event, context) {
     var altXkcd = new AltXkcd();
     altXkcd.execute(event, context);
 };
+
