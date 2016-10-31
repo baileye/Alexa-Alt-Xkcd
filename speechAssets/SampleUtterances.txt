@@ -2,3 +2,7 @@ GetAltText what is the x. k. c. d. alt text
 GetAltText what is the text
 GetAltText today's comic
 GetAltText comic 
+GetAltText for todays comic
+GetAltText what is todays alt comic text
+GetAltText load today's comic
+GetAltText get today's comic
