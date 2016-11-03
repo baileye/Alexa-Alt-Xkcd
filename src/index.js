@@ -36,7 +36,7 @@ AltXkcd.prototype.eventHandlers.onLaunch = function (launchRequest, session, res
     console.log("onLaunch requestId: " + launchRequest.requestId + ", sessionId: " + session.sessionId);
     //handleWelcomeRequest(response);
     // Design decision -- as the skill has a single request currently, go straight to loading alt text
-    handleOneshotAltRequest(intent, session, response);
+    handleOneshotAltRequest(null, session, response);
 };
 
 AltXkcd.prototype.eventHandlers.onSessionEnded = function (sessionEndedRequest, session) {
